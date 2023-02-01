@@ -6,16 +6,17 @@ import {
   Inject,
   UseGuards,
   Request,
-  Session,
   Req,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { SERVICE } from 'src/utils/constants/constants';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto/create-auth.dto';
 import { AuthenticatedGuard } from '../utils/guards/Authenticated.guard';
 import { LocalAuthGuard } from './guards/LocalAuth.guard';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
+import { UnauthenticatedGuard } from 'src/utils/guards/Unauthenticated.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -27,10 +28,10 @@ export class AuthController {
 
   @Post('register')
   register(@Body() authData: CreateUserDto) {
-    console.log(authData);
-    console.log(this.configService.get('REGISTRATION_SECRET'));
-    console.log(process.env.NODE_ENV !== 'production');
-    return 'this.authService.createUser(authData)';
+    if (authData.secret === this.configService.get('REGISTRATION_SECRET')) {
+      return this.authService.createUser(authData);
+    }
+    throw new HttpException('Contact site admin', HttpStatus.FORBIDDEN);
   }
 
   @UseGuards(LocalAuthGuard)
@@ -44,6 +45,12 @@ export class AuthController {
   @Get()
   getAuthStatus(@Req() session: any) {
     return session.user;
+  }
+
+  @UseGuards(UnauthenticatedGuard)
+  @Get('unauthenticated')
+  getUnAuthStatus() {
+    return true;
   }
 
   // @Get(':id')
