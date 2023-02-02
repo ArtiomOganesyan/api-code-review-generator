@@ -1,5 +1,3 @@
-import { IsEnum } from 'class-validator';
-import { Campus } from 'src/utils/constants/enums';
 import {
   Column,
   Entity,
@@ -19,19 +17,6 @@ export class Student {
     nullable: false,
   })
   name: string;
-
-  @Column({
-    nullable: false,
-    unique: true,
-  })
-  email: string;
-
-  @Column({
-    // #KNOW this column will be hidden by default. Use query builder to retrieve it.
-    select: false,
-    nullable: false,
-  })
-  password: string;
 
   @ManyToOne(() => Group, (group) => group.students)
   group: Group;

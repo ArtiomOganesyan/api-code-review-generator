@@ -1,7 +1,6 @@
-// DB Enums
-
-export enum Campus {
+export enum CampusEnum {
   msk = 'msk',
   spb = 'spb',
   online = 'online',
+  wait = 'wait',
 }

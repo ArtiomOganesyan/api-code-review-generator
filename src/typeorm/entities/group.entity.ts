@@ -17,30 +17,16 @@ export class Group {
   @Column({
     nullable: false,
   })
-  name: string;
+  title: string;
 
   @Column({
     nullable: false,
-    unique: true,
   })
-  email: string;
+  phase: number;
 
-  @Column({
-    // #KNOW this column will be hidden by default. Use query builder to retrieve it.
-    select: false,
-    nullable: false,
-  })
-  password: string;
-
-  @ManyToOne(() => Campus, (campus) => campus.groups)
+  @ManyToOne(() => Campus, (campus) => campus.groups, { onDelete: 'CASCADE' })
   campus: Campus;
-
-  @OneToMany(() => User, (user) => user.group)
-  users: User[];
 
   @OneToMany(() => Student, (student) => student.group)
   students: Student[];
-
-  @OneToMany(() => User, (user) => user.group)
-  teachers: User[];
 }

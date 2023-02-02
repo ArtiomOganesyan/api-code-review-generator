@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { Campus } from 'src/utils/constants/enums';
+import { CampusEnum } from 'src/utils/constants/enums';
 
 export class CreateUserDto {
   @IsString()
@@ -14,9 +14,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsEnum(Campus)
+  @IsEnum(CampusEnum)
   @IsNotEmpty()
-  campus: Campus;
+  campus: CampusEnum;
 
   @IsString()
   @IsNotEmpty()

@@ -34,9 +34,6 @@ export class User {
   })
   password: string;
 
-  @ManyToOne(() => Group, (group: Group) => group.users)
-  group: Group;
-
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
 }
