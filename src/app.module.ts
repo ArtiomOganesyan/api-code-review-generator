@@ -6,7 +6,6 @@ import { PassportModule } from '@nestjs/passport';
 import entities from './typeorm/entities/entities';
 import { ConfigModule } from '@nestjs/config';
 import { StudentsModule } from './students/students.module';
-import { TeachersModule } from './teachers/teachers.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CampusModule } from './campus/campus.module';
 import { GroupsModule } from './groups/groups.module';
@@ -28,7 +27,6 @@ import { GroupsModule } from './groups/groups.module';
     PassportModule.register({ session: true }),
     AuthModule,
     StudentsModule,
-    TeachersModule,
     ReviewsModule,
     CampusModule,
     GroupsModule,

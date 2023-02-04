@@ -1,26 +1,60 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Student } from 'src/typeorm/entities/student.entity';
+import { Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
+  constructor(
+    @InjectRepository(Student)
+    private readonly StudentRepo: Repository<Student>,
+  ) {}
+
+  async create(studentData: CreateStudentDto) {
+    try {
+      const student = await this.StudentRepo.create({
+        name: studentData.name,
+        group: { id: +studentData.groupId },
+      });
+      return await this.StudentRepo.save(student);
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  findAll() {
-    return `This action returns all students`;
+  findAll(students) {
+    return this.StudentRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} student`;
+    return this.StudentRepo.findOneBy({ id });
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(id: number, studentData: UpdateStudentDto) {
+    try {
+      const updateOptions: any = {};
+      if (studentData.name) {
+        updateOptions.name = studentData.name;
+      }
+      if (studentData.groupId) {
+        updateOptions.group = studentData.groupId;
+      }
+      const { affected } = await this.StudentRepo.update({ id }, updateOptions);
+      return { msg: `${affected} rows affected` };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
+  async remove(id: number) {
+    try {
+      const { affected } = await this.StudentRepo.delete({ id });
+      return { msg: `${affected} rows affected` };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }
