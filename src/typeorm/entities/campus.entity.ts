@@ -2,6 +2,7 @@ import { IsEnum } from 'class-validator';
 import { CampusEnum } from 'src/utils/constants/enums';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Group } from './group.entity';
+import { Teacher } from './teacher.entity';
 
 @Entity()
 export class Campus {
@@ -17,4 +18,7 @@ export class Campus {
 
   @OneToMany(() => Group, (group: Group) => group.campus)
   groups: Group[];
+
+  @OneToMany(() => Teacher, (teacher) => teacher.campus)
+  teachers: Teacher[];
 }

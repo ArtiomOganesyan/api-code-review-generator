@@ -9,6 +9,7 @@ import { StudentsModule } from './students/students.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CampusModule } from './campus/campus.module';
 import { GroupsModule } from './groups/groups.module';
+import { TeachersModule } from './teachers/teachers.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { GroupsModule } from './groups/groups.module';
     ReviewsModule,
     CampusModule,
     GroupsModule,
+    TeachersModule,
   ],
   controllers: [],
   providers: [],

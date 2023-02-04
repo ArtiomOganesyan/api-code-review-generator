@@ -35,7 +35,7 @@ export class StudentsService {
 
   async update(id: number, studentData: UpdateStudentDto) {
     try {
-      const updateOptions: any = {};
+      const updateOptions: Record<string, string | number> = {};
       if (studentData.name) {
         updateOptions.name = studentData.name;
       }
