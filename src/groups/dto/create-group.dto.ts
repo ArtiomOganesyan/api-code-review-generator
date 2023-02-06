@@ -9,5 +9,5 @@ export class CreateGroupDto {
   phase: number;
 
   @IsNotEmpty()
-  campusId: string | number;
+  campusId: number;
 }

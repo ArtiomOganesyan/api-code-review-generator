@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Teacher } from 'src/typeorm/entities/teacher.entity';
+import { Repository } from 'typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 @Injectable()
 export class TeachersService {
-  create(createTeacherDto: CreateTeacherDto) {
-    return 'This action adds a new teacher';
+  constructor(
+    @InjectRepository(Teacher)
+    private readonly TeacherRepo: Repository<Teacher>,
+  ) {}
+
+  async create({ name, campusId }: CreateTeacherDto) {
+    try {
+      const teacher = await this.TeacherRepo.create({
+        name,
+        campus: { id: campusId },
+      });
+      return await this.TeacherRepo.save(teacher);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  findAll() {
-    return `This action returns all teachers`;
+  async findByCampus(campus) {
+    return await this.TeacherRepo.find({
+      where: {
+        campus: {
+          location: campus,
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} teacher`;
+  async update(id: number, teacherData: UpdateTeacherDto) {
+    try {
+      const { affected } = await this.TeacherRepo.update({ id }, teacherData);
+      return { msg: `${affected} rows affected` };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return `This action updates a #${id} teacher`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} teacher`;
+  async remove(id: number) {
+    try {
+      const { affected } = await this.TeacherRepo.delete({ id });
+      return { msg: `${affected} rows affected` };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

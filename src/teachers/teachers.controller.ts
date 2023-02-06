@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  UseGuards,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { AuthenticatedGuard } from 'src/utils/guards/Authenticated.guard';
+import { ParseIntPipe } from '@nestjs/common/pipes';
 
+@UseGuards(AuthenticatedGuard)
 @Controller('teachers')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
   @Post()
-  create(@Body() createTeacherDto: CreateTeacherDto) {
-    return this.teachersService.create(createTeacherDto);
+  create(@Body() teacherData: CreateTeacherDto) {
+    return this.teachersService.create(teacherData);
   }
 
   @Get()
-  findAll() {
-    return this.teachersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.teachersService.findOne(+id);
+  findByCampus(@Query('campus') campus: string) {
+    return this.teachersService.findByCampus(campus);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.teachersService.update(+id, updateTeacherDto);
+  update(@Param('id') id: string, @Body() teacherData: UpdateTeacherDto) {
+    return this.teachersService.update(+id, teacherData);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teachersService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.teachersService.remove(id);
   }
 }
