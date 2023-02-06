@@ -1,0 +1,815 @@
+{
+	"info": {
+		"_postman_id": "9eac138a-23fe-4fcc-8983-4b002e4252ad",
+		"name": "code_review_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8042697"
+	},
+	"item": [
+		{
+			"name": "auth & user",
+			"item": [
+				{
+					"name": "reg user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "http://127.0.0.1:3030",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"aa\",\r\n    \"email\": \"aa@aa.aa\",\r\n    \"password\": \"string\",\r\n    \"mentor\": true,\r\n    \"campus\": \"online\",\r\n    \"secret\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "http://127.0.0.1:3030",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"aa@aa.aa\",\r\n    \"password\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth status",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "http://127.0.0.1:3030",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:4040/api/auth",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check if not auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/auth/unauthenticated",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"auth",
+								"unauthenticated"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/user/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/user",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "campus & teacher",
+			"item": [
+				{
+					"name": "create campus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"location\":\"spb\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/campus",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"campus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all campuses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/campus",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"campus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update campus location",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"location\":\"kzn\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/campus/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"campus",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete campus",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/campus/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"campus",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sergey other\",\r\n    \"campusId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/teachers",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"teachers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all teachers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/teachers/",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"teachers",
+								""
+							],
+							"query": [
+								{
+									"key": "campus",
+									"value": "online",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update teacher",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Sergey Mazay\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/teachers/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"teachers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete teacher",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/teachers/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"teachers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "group",
+			"item": [
+				{
+					"name": "create group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Yeti\",\r\n    \"campusId\": 1,\r\n    \"phase\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/groups",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/groups?students",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "teachers",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "students",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/groups/:id?students",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"groups",
+								":id"
+							],
+							"query": [
+								{
+									"key": "teachers",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "students",
+									"value": null
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit group",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"phase\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/groups/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"groups",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/groups/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"groups",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "create student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Taton\",\r\n    \"groupId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/students",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/students/?name=o&groupId=1",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"students",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "o"
+								},
+								{
+									"key": "groupId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/students/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update student",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Zackoru\",\r\n    \"groupId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/students/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/students/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "review",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Lorem Ipsum\",\r\n    \"grade\": 0,\r\n    \"studentId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/reviews",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find review by studentId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4040/api/reviews/:studentId",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"reviews",
+								":studentId"
+							],
+							"variable": [
+								{
+									"key": "studentId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update review",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"good all around\",\r\n    \"grade\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4040/api/reviews/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"reviews",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
