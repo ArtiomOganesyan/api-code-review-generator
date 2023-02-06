@@ -24,14 +24,14 @@ export class StudentsController {
     return this.studentsService.create(studentData);
   }
 
-  @Get()
-  findAll(@Query('students') students: string | string[]) {
-    return this.studentsService.findAll(students);
+  @Get('')
+  async findBy(@Query('name') name: string, @Query('groupId') groupId: number) {
+    return await this.studentsService.findBy(name, groupId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.studentsService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    return await this.studentsService.findById(id);
   }
 
   @Patch(':id')

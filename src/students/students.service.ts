@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from 'src/typeorm/entities/student.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 
@@ -25,12 +25,23 @@ export class StudentsService {
     }
   }
 
-  findAll(students) {
-    return this.StudentRepo.find();
+  findById(id: number) {
+    return this.StudentRepo.findOneBy({ id });
   }
 
-  findOne(id: number) {
-    return this.StudentRepo.findOneBy({ id });
+  async findBy(name?: string, groupId?: number) {
+    const options: FindOptionsWhere<Student> = {};
+
+    if (name) {
+      options.name = ILike(`%${name}%`);
+    }
+
+    if (groupId) {
+      options.group = { id: groupId };
+    }
+
+    const result = await this.StudentRepo.findBy(options);
+    return result;
   }
 
   async update(id: number, studentData: UpdateStudentDto) {
