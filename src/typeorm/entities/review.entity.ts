@@ -22,7 +22,7 @@ export class Review {
   @Column({
     nullable: false,
   })
-  grade: string;
+  grade: number;
 
   @ManyToOne(() => User, (user) => user.reviews)
   user: User;

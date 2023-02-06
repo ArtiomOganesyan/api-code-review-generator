@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Review } from 'src/typeorm/entities/review.entity';
+import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 
 @Injectable()
 export class ReviewsService {
-  create(createReviewDto: CreateReviewDto) {
-    return 'This action adds a new review';
+  constructor(
+    @InjectRepository(Review) private readonly ReviewRepo: Repository<Review>,
+  ) {}
+
+  async create(reviewData: CreateReviewDto, passport) {
+    try {
+      const result = await this.ReviewRepo.create({
+        text: reviewData.text,
+        grade: reviewData.grade,
+        student: { id: reviewData.studentId },
+        user: { id: passport.user.id },
+      });
+
+      return await this.ReviewRepo.save(result);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  findAll() {
-    return `This action returns all reviews`;
+  async findOne(id: number) {
+    try {
+      return await this.ReviewRepo.findBy({ student: { id } });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
-  }
-
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+  async update(id: number, updateData: UpdateReviewDto) {
+    try {
+      return await this.ReviewRepo.update(
+        { id },
+        { text: updateData.text, grade: updateData.grade },
+      );
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

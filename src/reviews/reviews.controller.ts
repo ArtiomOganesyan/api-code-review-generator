@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Session,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -19,27 +20,18 @@ export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewsService.create(createReviewDto);
+  create(@Body() reviewData: CreateReviewDto, @Session() session) {
+    const { passport } = session;
+    return this.reviewsService.create(reviewData, passport);
   }
 
-  @Get()
-  findAll() {
-    return this.reviewsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+  @Get('/:studentId')
+  findOne(@Param('studentId') studentId: number) {
+    return this.reviewsService.findOne(studentId);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewsService.update(+id, updateReviewDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewsService.remove(+id);
   }
 }
