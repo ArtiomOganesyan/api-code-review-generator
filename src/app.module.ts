@@ -10,20 +10,27 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { CampusModule } from './campus/campus.module';
 import { GroupsModule } from './groups/groups.module';
 import { TeachersModule } from './teachers/teachers.module';
+import { ConfigService } from '@nestjs/config';
+import { CONFIG } from './utils/constants/constants';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     UserModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5433,
-      username: 'admin',
-      password: '123',
-      database: 'code_review',
-      entities: [...entities],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: configService.get<string>(CONFIG.DB_HOST),
+          port: configService.get<number>(CONFIG.DB_PORT),
+          username: configService.get<string>(CONFIG.DB_USERNAME),
+          password: configService.get<string>(CONFIG.DB_PASSWORD),
+          database: configService.get<string>(CONFIG.DB_NAME),
+          entities: [...entities],
+          synchronize: true,
+        };
+      },
     }),
     PassportModule.register({ session: true }),
     AuthModule,
