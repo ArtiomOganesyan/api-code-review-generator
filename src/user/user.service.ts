@@ -16,8 +16,10 @@ export class UserService {
     try {
       const password = await hashPassword(createUserData.password);
       const user = this.userRepository.create({ ...createUserData, password });
-      return await this.userRepository.save(user);
+      await this.userRepository.save(user);
+      return { success: true };
     } catch (error) {
+      console.log(error);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }

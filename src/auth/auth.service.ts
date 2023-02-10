@@ -11,6 +11,11 @@ export class AuthService {
 
   async validateUser(email, password) {
     const user = await this.userService.findOneByEmail(email);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
     const isValidPassword = await comparePassword(password, user.password);
 
     if (isValidPassword) {
@@ -21,8 +26,8 @@ export class AuthService {
   }
 
   async createUser(authData) {
-    const user = await this.userService.create(authData);
-    delete user.password;
-    return user;
+    const result = await this.userService.create(authData);
+    console.log(result);
+    return result;
   }
 }

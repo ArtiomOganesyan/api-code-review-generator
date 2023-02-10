@@ -12,6 +12,8 @@ import { CONFIG } from './utils/constants/constants';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({ credentials: true, origin: ['http://localhost:3030'] });
+
   const sessionRepository = app
     .get(DataSource)
     .getRepository(SessionRepository);

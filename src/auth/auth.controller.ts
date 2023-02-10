@@ -2,11 +2,12 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
   Body,
   Inject,
   UseGuards,
   Request,
-  Req,
+  Response,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
@@ -27,11 +28,17 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  register(@Body() authData: CreateUserDto) {
-    if (authData.secret === this.configService.get('REGISTRATION_SECRET')) {
-      return this.authService.createUser(authData);
+  async register(@Body() authData: CreateUserDto) {
+    try {
+      if (authData.secret === this.configService.get('REGISTRATION_SECRET')) {
+        return await this.authService.createUser(authData);
+      }
+    } catch (err) {
+      throw new HttpException(
+        'Contact site admin or try to login',
+        HttpStatus.FORBIDDEN,
+      );
     }
-    throw new HttpException('Contact site admin', HttpStatus.FORBIDDEN);
   }
 
   @UseGuards(LocalAuthGuard)
@@ -42,8 +49,22 @@ export class AuthController {
   }
 
   @UseGuards(AuthenticatedGuard)
+  @Delete('logout')
+  logout(@Request() req, @Response() res) {
+    req.logout((err) => {
+      console.log(err);
+      if (err) {
+        res.sendStatus(400);
+        return;
+      }
+      res.clearCookie('elbrus_cookie');
+      res.sendStatus(200);
+    });
+  }
+
+  @UseGuards(AuthenticatedGuard)
   @Get()
-  getAuthStatus(@Req() session: any) {
+  getAuthStatus(@Request() session: any) {
     return session.user;
   }
 
