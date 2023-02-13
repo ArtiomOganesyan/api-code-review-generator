@@ -1,5 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CampusService } from 'src/campus/campus.service';
 import { Teacher } from 'src/typeorm/entities/teacher.entity';
 import { Repository } from 'typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
@@ -10,13 +11,16 @@ export class TeachersService {
   constructor(
     @InjectRepository(Teacher)
     private readonly TeacherRepo: Repository<Teacher>,
+    @Inject(CampusService)
+    private readonly campusService: CampusService,
   ) {}
 
-  async create({ name, campusId }: CreateTeacherDto) {
+  async create({ name, campus: location }: CreateTeacherDto) {
     try {
+      const { id } = await this.campusService.findByLocation(location);
       const teacher = await this.TeacherRepo.create({
         name,
-        campus: { id: campusId },
+        campus: { id },
       });
       return await this.TeacherRepo.save(teacher);
     } catch (error) {
@@ -36,7 +40,10 @@ export class TeachersService {
 
   async update(id: number, teacherData: UpdateTeacherDto) {
     try {
-      const { affected } = await this.TeacherRepo.update({ id }, teacherData);
+      const { affected } = await this.TeacherRepo.update(
+        { id },
+        { name: teacherData.name },
+      );
       return { msg: `${affected} rows affected` };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -46,7 +53,7 @@ export class TeachersService {
   async remove(id: number) {
     try {
       const { affected } = await this.TeacherRepo.delete({ id });
-      return { msg: `${affected} rows affected` };
+      return { msg: affected };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

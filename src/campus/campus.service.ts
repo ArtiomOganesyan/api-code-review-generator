@@ -24,6 +24,10 @@ export class CampusService {
     return this.campusRepo.find();
   }
 
+  findByLocation(location) {
+    return this.campusRepo.findOneBy({ location });
+  }
+
   async update(id: number, campusData: UpdateCampusDto) {
     try {
       const { affected } = await this.campusRepo.update({ id }, campusData);

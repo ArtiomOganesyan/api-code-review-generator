@@ -8,7 +8,6 @@ export class Teacher {
 
   @Column({
     nullable: false,
-    unique: true,
   })
   name: string;
 

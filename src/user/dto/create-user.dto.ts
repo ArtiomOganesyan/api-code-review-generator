@@ -14,10 +14,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsEnum(CampusEnum)
-  @IsNotEmpty()
-  campus: CampusEnum;
-
   @IsString()
   @IsNotEmpty()
   secret: string;
