@@ -1,5 +1,6 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CampusService } from 'src/campus/campus.service';
 import { Campus } from 'src/typeorm/entities/campus.entity';
 import { Group } from 'src/typeorm/entities/group.entity';
 import { Repository } from 'typeorm';
@@ -10,21 +11,23 @@ import { UpdateGroupDto } from './dto/update-group.dto';
 export class GroupsService {
   constructor(
     @InjectRepository(Group) private readonly GroupRepo: Repository<Group>,
-    @InjectRepository(Campus) private readonly CampusRepo: Repository<Campus>,
+    @Inject(CampusService) private readonly campusService: CampusService,
   ) {}
 
   async create(groupData: CreateGroupDto, user) {
     try {
-      const group = await this.GroupRepo.create(groupData);
-      const campus = await this.CampusRepo.findOneBy({
-        id: +groupData.campusId,
+      const { title, location, phase } = groupData;
+      const { id } = await this.campusService.findByLocation(location);
+      const group = await this.GroupRepo.create({
+        title,
+        phase: +phase,
+        campus: { id },
       });
 
-      if (!campus) {
+      if (!id) {
         throw new Error(`Campus not found`);
       }
 
-      group.campus = campus;
       return await this.GroupRepo.save(group);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -37,11 +40,12 @@ export class GroupsService {
         campus: true,
         students: query.students,
       },
+      where: { campus: { location: query.campus } },
     });
   }
 
-  findOne(id: number, query) {
-    return this.GroupRepo.findOne({
+  async findOne(id: number, query) {
+    return await this.GroupRepo.findOne({
       where: { id },
       relations: {
         campus: true,
@@ -53,7 +57,7 @@ export class GroupsService {
   async update(id: number, groupData: UpdateGroupDto) {
     try {
       const { affected } = await this.GroupRepo.update({ id }, groupData);
-      return { msg: `${affected} rows affected` };
+      return { msg: 'affected' };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -62,7 +66,7 @@ export class GroupsService {
   async remove(id: number) {
     try {
       const { affected } = await this.GroupRepo.delete({ id });
-      return { msg: `${affected} rows affected` };
+      return { msg: affected };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }

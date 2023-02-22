@@ -13,6 +13,7 @@ import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { AuthenticatedGuard } from 'src/utils/guards/Authenticated.guard';
+import { CampusEnum } from 'src/utils/constants/enums';
 
 @Controller('students')
 @UseGuards(AuthenticatedGuard)
@@ -25,8 +26,12 @@ export class StudentsController {
   }
 
   @Get('')
-  async findBy(@Query('name') name: string, @Query('groupId') groupId: number) {
-    return await this.studentsService.findBy(name, groupId);
+  async findBy(
+    @Query('name') name: string,
+    @Query('groupId') groupId: number,
+    @Query('campus') campus: CampusEnum,
+  ) {
+    return await this.studentsService.findBy(name, groupId, campus);
   }
 
   @Get(':id')

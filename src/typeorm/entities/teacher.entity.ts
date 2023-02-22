@@ -11,6 +11,6 @@ export class Teacher {
   })
   name: string;
 
-  @ManyToOne(() => Campus, (campus) => campus.teachers)
+  @ManyToOne(() => Campus, (campus) => campus.teachers, { onDelete: 'CASCADE' })
   campus: Campus;
 }

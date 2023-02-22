@@ -1,13 +1,13 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumberString, IsString } from 'class-validator';
 
 export class CreateGroupDto {
   @IsString()
   @IsNotEmpty()
   title: string;
 
-  @IsNumber()
   phase: number;
 
+  @IsString()
   @IsNotEmpty()
-  campusId: number;
+  location: string;
 }

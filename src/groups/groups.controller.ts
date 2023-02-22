@@ -9,7 +9,6 @@ import {
   UseGuards,
   Session,
   Query,
-  ParseBoolPipe,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -29,16 +28,25 @@ export class GroupsController {
   }
 
   @Get()
-  findAll(@Query('students', queryBoolPipe) students: boolean) {
-    return this.groupsService.findAll({ students });
+  findAll(
+    @Query('students', queryBoolPipe) students: boolean,
+    @Query('campus') campus: string,
+  ) {
+    return this.groupsService.findAll({ students, campus });
   }
 
   @Get(':id')
-  findOne(
+  async findOne(
     @Param('id') id: string,
     @Query('students', queryBoolPipe) students: boolean,
   ) {
-    return this.groupsService.findOne(+id, { students });
+    const result = await this.groupsService.findOne(+id, { students });
+    // TODO: more duck-tape for the God of duck-tape, findOne returns null if nothing was found.
+    // However, on the client the don't see any result. So and empty object will have to suffice.
+    if (!result) {
+      return {};
+    }
+    return result;
   }
 
   @UseGuards(AuthenticatedGuard)

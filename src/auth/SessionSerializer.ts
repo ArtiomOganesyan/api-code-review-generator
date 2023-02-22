@@ -13,13 +13,13 @@ export class SessionSerializer extends PassportSerializer {
 
   async deserializeUser(payload: any, done: (err, result) => void) {
     const user = await this.userService.findById(payload.id);
-    console.log('====>', user);
+    // console.log('DESER ====>', user);
 
     done(null, user);
   }
 
   serializeUser(user: any, done: (err, result) => void) {
-    console.log(user);
+    // console.log('SER ====> ', user);
 
     done(null, user);
   }

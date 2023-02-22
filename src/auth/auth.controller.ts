@@ -52,7 +52,6 @@ export class AuthController {
   @Delete('logout')
   logout(@Request() req, @Response() res) {
     req.logout((err) => {
-      console.log(err);
       if (err) {
         res.sendStatus(400);
         return;

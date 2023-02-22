@@ -24,9 +24,11 @@ export class Review {
   })
   grade: number;
 
-  @ManyToOne(() => User, (user) => user.reviews)
+  @ManyToOne(() => User, (user) => user.reviews, { onDelete: 'SET NULL' })
   user: User;
 
-  @ManyToOne(() => Student, (student) => student.reviews)
+  @ManyToOne(() => Student, (student) => student.reviews, {
+    onDelete: 'SET NULL',
+  })
   student: Student;
 }

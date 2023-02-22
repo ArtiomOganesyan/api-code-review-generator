@@ -24,6 +24,11 @@ export class Group {
   })
   phase: number;
 
+  @Column({
+    default: false,
+  })
+  archive: boolean;
+
   @ManyToOne(() => Campus, (campus) => campus.groups, { onDelete: 'CASCADE' })
   campus: Campus;
 

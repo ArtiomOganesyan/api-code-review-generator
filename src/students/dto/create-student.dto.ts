@@ -1,10 +1,13 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateStudentDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
-  @IsNotEmpty()
-  groupId: string | number;
+  @IsString()
+  @IsOptional()
+  names: string;
+
+  groupId: number | null;
 }

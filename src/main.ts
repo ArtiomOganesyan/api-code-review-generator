@@ -8,11 +8,20 @@ import { DataSource } from 'typeorm';
 import { Session as SessionRepository } from './typeorm/entities/session.entity';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG } from './utils/constants/constants';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
 
-  app.enableCors({ credentials: true, origin: ['http://localhost:3030'] });
+  app.useLogger(app.get(Logger));
+
+  app.enableCors({
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    origin: ['http://localhost:3030', 'http://127.0.0.1:3030'],
+  });
 
   const sessionRepository = app
     .get(DataSource)

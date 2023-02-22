@@ -18,9 +18,9 @@ export class Student {
   })
   name: string;
 
-  @ManyToOne(() => Group, (group) => group.students)
+  @ManyToOne(() => Group, (group) => group.students, { onDelete: 'SET NULL' })
   group: Group;
 
-  @OneToMany(() => Review, (review) => review.user)
+  @OneToMany(() => Review, (review) => review.user, { onDelete: 'SET NULL' })
   reviews: Review[];
 }

@@ -27,7 +27,7 @@ export class AuthService {
 
   async createUser(authData) {
     const result = await this.userService.create(authData);
-    console.log(result);
+    // console.log({ result });
     return result;
   }
 }

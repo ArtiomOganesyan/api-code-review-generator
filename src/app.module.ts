@@ -12,10 +12,29 @@ import { GroupsModule } from './groups/groups.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG } from './utils/constants/constants';
+import { LoggerModule } from 'nestjs-pino/LoggerModule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    LoggerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const env = configService.get('env');
+        return env === 'production'
+          ? {}
+          : {
+              pinoHttp: {
+                transport: {
+                  target: 'pino-pretty',
+                  options: {
+                    singleLine: true,
+                  },
+                },
+              },
+            };
+      },
+    }),
     UserModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
