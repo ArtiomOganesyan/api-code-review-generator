@@ -1,11 +1,9 @@
 import {
   Column,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Group } from './group.entity';
 import { Review } from './review.entity';
 
 @Entity()
