@@ -10,8 +10,8 @@ import { CampusModule } from './campus/campus.module';
 import { GroupsModule } from './groups/groups.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { ConfigService } from '@nestjs/config';
-import { CONFIG } from './utils/constants/constants';
 import { LoggerModule } from 'nestjs-pino/LoggerModule';
+import { dataSourceOptions } from 'db/data-source';
 
 @Module({
   imports: [
@@ -35,23 +35,7 @@ import { LoggerModule } from 'nestjs-pino/LoggerModule';
       },
     }),
     UserModule,
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: configService.get<string>(CONFIG.DB_HOST),
-          port: configService.get<number>(CONFIG.DB_PORT),
-          username: configService.get<string>(CONFIG.DB_USERNAME),
-          password: configService.get<string>(CONFIG.DB_PASSWORD),
-          database: configService.get<string>(CONFIG.DB_NAME),
-          entities: ['dist/**/*.entity.js'],
-          migrations: ['dist/**/*.migrations.js'],
-          // If work with migrations we need to disable synchronization
-          // synchronize: true,
-        };
-      },
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     PassportModule.register({ session: true }),
     AuthModule,
     StudentsModule,
