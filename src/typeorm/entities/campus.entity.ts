@@ -1,5 +1,4 @@
 import { IsEnum } from 'class-validator';
-import { type } from 'os';
 import { CampusEnum } from 'src/utils/constants/enums';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Group } from './group.entity';

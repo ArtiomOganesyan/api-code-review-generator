@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
-import entities from './typeorm/entities/entities';
 import { ConfigModule } from '@nestjs/config';
 import { StudentsModule } from './students/students.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -46,8 +45,10 @@ import { LoggerModule } from 'nestjs-pino/LoggerModule';
           username: configService.get<string>(CONFIG.DB_USERNAME),
           password: configService.get<string>(CONFIG.DB_PASSWORD),
           database: configService.get<string>(CONFIG.DB_NAME),
-          entities: [...entities],
-          synchronize: true,
+          entities: ['dist/**/*.entity.js'],
+          migrations: ['dist/**/*.migrations.js'],
+          // If work with migrations we need to disable synchronization
+          // synchronize: true,
         };
       },
     }),
